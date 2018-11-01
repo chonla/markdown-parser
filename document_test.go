@@ -22,6 +22,7 @@ func TestAppendElement(t *testing.T) {
 		Elements: []Element{
 			Element{
 				Text:     "Test",
+				Type:     "Text",
 				Elements: []Element{},
 			},
 		},
@@ -29,6 +30,7 @@ func TestAppendElement(t *testing.T) {
 
 	doc.Append(Element{
 		Text:     "Test",
+		Type:     "Text",
 		Elements: []Element{},
 	})
 

@@ -34,6 +34,7 @@ func TestParseSimpleDocument(t *testing.T) {
 		Elements: []Element{
 			Element{
 				Text:     "Test",
+				Type:     "Text",
 				Elements: []Element{},
 			},
 		},
@@ -50,10 +51,29 @@ func TestParseSimpleDocumentWith2SimpleParagraph(t *testing.T) {
 		Elements: []Element{
 			Element{
 				Text:     "Test",
+				Type:     "Text",
 				Elements: []Element{},
 			},
 			Element{
 				Text:     "Test2",
+				Type:     "Text",
+				Elements: []Element{},
+			},
+		},
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
+
+func TestParseH1Document(t *testing.T) {
+	content := "# Title"
+	expected := Document{
+		Elements: []Element{
+			Element{
+				Text:     "Title",
+				Type:     "H1",
 				Elements: []Element{},
 			},
 		},

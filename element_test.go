@@ -9,6 +9,7 @@ import (
 func TestCreateNewElement(t *testing.T) {
 	expected := Element{
 		Text:     "",
+		Type:     "Text",
 		Elements: []Element{},
 	}
 

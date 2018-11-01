@@ -3,6 +3,7 @@ package parser
 // Element represents element in markdown document
 type Element struct {
 	Text     string
+	Type     string
 	Elements []Element
 }
 
@@ -10,6 +11,7 @@ type Element struct {
 func NewElement() Element {
 	return Element{
 		Text:     "",
+		Type:     "Text",
 		Elements: []Element{},
 	}
 }
