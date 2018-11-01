@@ -7,10 +7,11 @@ import (
 )
 
 func TestCreateNewDocument(t *testing.T) {
-	doc := NewDocument()
 	expected := Document{
 		Elements: []Element{},
 	}
+
+	doc := NewDocument()
 
 	assert.Equal(t, expected, doc)
 }
