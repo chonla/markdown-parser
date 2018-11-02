@@ -83,3 +83,20 @@ func TestParseH1Document(t *testing.T) {
 
 	assert.Equal(t, expected, result)
 }
+
+func TestParseH2Document(t *testing.T) {
+	content := "## Title"
+	expected := Document{
+		Elements: []Element{
+			Element{
+				Text:     "Title",
+				Type:     "H2",
+				Elements: []Element{},
+			},
+		},
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
