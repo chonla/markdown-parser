@@ -2,17 +2,20 @@ package parser
 
 // Document holds markdown document
 type Document struct {
-	Elements []Element
+	*Element
 }
 
 // NewDocument creates a document
-func NewDocument() Document {
-	return Document{
-		Elements: []Element{},
+func NewDocument() *Document {
+	return &Document{
+		Element: &Element{
+			Type:     "doc",
+			Elements: []*Element{},
+		},
 	}
 }
 
 // Append element to element list
-func (d *Document) Append(el Element) {
-	d.Elements = append(d.Elements, el)
+func (d *Document) Append(el *Element) {
+	d.Element.Append(el)
 }

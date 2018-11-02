@@ -7,10 +7,10 @@ import (
 )
 
 func TestCreateNewElement(t *testing.T) {
-	expected := Element{
+	expected := &Element{
 		Text:     "",
-		Type:     "Text",
-		Elements: []Element{},
+		Type:     "text",
+		Elements: []*Element{},
 	}
 
 	el := NewElement()

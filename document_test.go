@@ -7,8 +7,11 @@ import (
 )
 
 func TestCreateNewDocument(t *testing.T) {
-	expected := Document{
-		Elements: []Element{},
+	expected := &Document{
+		Element: &Element{
+			Type:     "doc",
+			Elements: []*Element{},
+		},
 	}
 
 	doc := NewDocument()
@@ -18,20 +21,23 @@ func TestCreateNewDocument(t *testing.T) {
 
 func TestAppendElement(t *testing.T) {
 	doc := NewDocument()
-	expected := Document{
-		Elements: []Element{
-			Element{
-				Text:     "Test",
-				Type:     "Text",
-				Elements: []Element{},
+	expected := &Document{
+		Element: &Element{
+			Type: "doc",
+			Elements: []*Element{
+				&Element{
+					Text:     "Test",
+					Type:     "text",
+					Elements: []*Element{},
+				},
 			},
 		},
 	}
 
-	doc.Append(Element{
+	doc.Append(&Element{
 		Text:     "Test",
-		Type:     "Text",
-		Elements: []Element{},
+		Type:     "text",
+		Elements: []*Element{},
 	})
 
 	assert.Equal(t, expected, doc)

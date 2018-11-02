@@ -8,8 +8,11 @@ import (
 
 func TestParseEmptyContent(t *testing.T) {
 	content := ""
-	expected := Document{
-		Elements: []Element{},
+	expected := &Document{
+		Element: &Element{
+			Type:     "doc",
+			Elements: []*Element{},
+		},
 	}
 
 	result := Parse(content)
@@ -19,8 +22,11 @@ func TestParseEmptyContent(t *testing.T) {
 
 func TestParseEmptyLineContent(t *testing.T) {
 	content := "\n\n\n"
-	expected := Document{
-		Elements: []Element{},
+	expected := &Document{
+		Element: &Element{
+			Type:     "doc",
+			Elements: []*Element{},
+		},
 	}
 
 	result := Parse(content)
@@ -30,14 +36,24 @@ func TestParseEmptyLineContent(t *testing.T) {
 
 func TestParseSimpleDocument(t *testing.T) {
 	content := "Test"
-	expected := Document{
-		Elements: []Element{
-			Element{
-				Text:     "Test",
-				Type:     "Text",
-				Elements: []Element{},
-			},
+
+	Text := &Element{
+		Text:     "Test",
+		Type:     "text",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			Text,
 		},
+	}
+
+	Text.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
 	}
 
 	result := Parse(content)
@@ -47,19 +63,32 @@ func TestParseSimpleDocument(t *testing.T) {
 
 func TestParseSimpleDocumentWith2SimpleParagraph(t *testing.T) {
 	content := "Test\nTest2"
-	expected := Document{
-		Elements: []Element{
-			Element{
-				Text:     "Test",
-				Type:     "Text",
-				Elements: []Element{},
-			},
-			Element{
-				Text:     "Test2",
-				Type:     "Text",
-				Elements: []Element{},
-			},
+
+	Text1 := &Element{
+		Text:     "Test",
+		Type:     "text",
+		Elements: []*Element{},
+	}
+
+	Text2 := &Element{
+		Text:     "Test2",
+		Type:     "text",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			Text1,
+			Text2,
 		},
+	}
+
+	Text1.Parent = Doc
+	Text2.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
 	}
 
 	result := Parse(content)
@@ -69,14 +98,24 @@ func TestParseSimpleDocumentWith2SimpleParagraph(t *testing.T) {
 
 func TestParseH1Document(t *testing.T) {
 	content := "# Title"
-	expected := Document{
-		Elements: []Element{
-			Element{
-				Text:     "Title",
-				Type:     "H1",
-				Elements: []Element{},
-			},
+
+	H1 := &Element{
+		Text:     "Title",
+		Type:     "h1",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			H1,
 		},
+	}
+
+	H1.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
 	}
 
 	result := Parse(content)
@@ -86,14 +125,60 @@ func TestParseH1Document(t *testing.T) {
 
 func TestParseH2Document(t *testing.T) {
 	content := "## Title"
-	expected := Document{
-		Elements: []Element{
-			Element{
-				Text:     "Title",
-				Type:     "H2",
-				Elements: []Element{},
-			},
+
+	H2 := &Element{
+		Text:     "Title",
+		Type:     "h2",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			H2,
 		},
+	}
+
+	H2.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
+
+func TestParseH1H2DocumentWithHierarchy(t *testing.T) {
+	content := "# H1 Title\n## H2 Title"
+
+	H2 := &Element{
+		Text:     "H2 Title",
+		Type:     "h2",
+		Elements: []*Element{},
+	}
+
+	H1 := &Element{
+		Text: "H1 Title",
+		Type: "h1",
+		Elements: []*Element{
+			H2,
+		},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			H1,
+		},
+	}
+
+	H2.Parent = H1
+	H1.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
 	}
 
 	result := Parse(content)

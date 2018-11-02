@@ -5,39 +5,51 @@ import (
 	"strings"
 )
 
-func Parse(content string) Document {
+// Parse markdown text to document
+func Parse(content string) *Document {
 	doc := NewDocument()
+	var cursor = doc.Element
 
 	lines := strings.Split(content, "\n")
 
 	for _, line := range lines {
 		if line != "" {
 			element := createElement(line)
-			doc.Append(element)
+			for ElementHierarchy[cursor.Type] >= ElementHierarchy[element.Type] {
+				cursor = cursor.Parent
+			}
+
+			element.Parent = cursor
+			cursor.Append(element)
+			cursor = element
 		}
 	}
+
 	return doc
 }
 
-func createElement(line string) Element {
+func createElement(line string) *Element {
 	if text, ok := tryH1(line); ok {
-		return Element{
+		return &Element{
 			Text:     text,
-			Type:     "H1",
-			Elements: []Element{},
+			Type:     "h1",
+			Parent:   nil,
+			Elements: []*Element{},
 		}
 	}
 	if text, ok := tryH2(line); ok {
-		return Element{
+		return &Element{
 			Text:     text,
-			Type:     "H2",
-			Elements: []Element{},
+			Type:     "h2",
+			Parent:   nil,
+			Elements: []*Element{},
 		}
 	}
-	return Element{
+	return &Element{
 		Text:     line,
-		Type:     "Text",
-		Elements: []Element{},
+		Type:     "text",
+		Parent:   nil,
+		Elements: []*Element{},
 	}
 }
 
