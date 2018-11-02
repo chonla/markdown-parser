@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"strings"
+	"regexp"
 )
 
 // Parse markdown text to document
@@ -9,7 +9,10 @@ func Parse(content string) *Document {
 	doc := NewDocument()
 	var cursor = doc.Element
 
-	lines := strings.Split(content, "\n")
+	sectionRe := regexp.MustCompile("\n\n+")
+	lines := sectionRe.Split(content, -1)
+
+	// lines := strings.Split(content, "\n\n")
 
 	for _, line := range lines {
 		if line != "" {

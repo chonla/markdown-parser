@@ -62,7 +62,7 @@ func TestParseSimpleDocument(t *testing.T) {
 }
 
 func TestParseSimpleDocumentWith2SimpleParagraph(t *testing.T) {
-	content := "Test\nTest2"
+	content := "Test\n\nTest2"
 
 	Text1 := &Element{
 		Text:     "Test",
@@ -86,6 +86,33 @@ func TestParseSimpleDocumentWith2SimpleParagraph(t *testing.T) {
 
 	Text1.Parent = Doc
 	Text2.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
+
+func TestParseSimpleDocumentWith1SimpleParagraphWithNewLine(t *testing.T) {
+	content := "Test\nTest2"
+
+	Text1 := &Element{
+		Text:     "Test\nTest2",
+		Type:     "text",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			Text1,
+		},
+	}
+
+	Text1.Parent = Doc
 
 	expected := &Document{
 		Element: Doc,
@@ -151,7 +178,7 @@ func TestParseH2Document(t *testing.T) {
 }
 
 func TestParseH1H2DocumentWithHierarchy(t *testing.T) {
-	content := "# H1 Title\n## H2 Title"
+	content := "# H1 Title\n\n## H2 Title"
 
 	H2 := &Element{
 		Text:     "H2 Title",
