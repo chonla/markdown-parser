@@ -150,8 +150,62 @@ func TestParseH1Document(t *testing.T) {
 	assert.Equal(t, expected, result)
 }
 
+func TestParseAlternateH1Document(t *testing.T) {
+	content := "Title\n=="
+
+	H1 := &Element{
+		Text:     "Title",
+		Type:     "h1",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			H1,
+		},
+	}
+
+	H1.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
+
 func TestParseH2Document(t *testing.T) {
 	content := "## Title"
+
+	H2 := &Element{
+		Text:     "Title",
+		Type:     "h2",
+		Elements: []*Element{},
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			H2,
+		},
+	}
+
+	H2.Parent = Doc
+
+	expected := &Document{
+		Element: Doc,
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
+
+func TestParseAlternateH2Document(t *testing.T) {
+	content := "Title\n--"
 
 	H2 := &Element{
 		Text:     "Title",

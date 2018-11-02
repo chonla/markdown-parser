@@ -53,12 +53,22 @@ func tryH1(line string) (string, bool) {
 	if len(m) > 0 {
 		return m[0][1], true
 	}
+	re = regexp.MustCompile("^(.+)\n==+$")
+	m = re.FindAllStringSubmatch(line, -1)
+	if len(m) > 0 {
+		return m[0][1], true
+	}
 	return "", false
 }
 
 func tryH2(line string) (string, bool) {
 	re := regexp.MustCompile("^## (.+)$")
 	m := re.FindAllStringSubmatch(line, -1)
+	if len(m) > 0 {
+		return m[0][1], true
+	}
+	re = regexp.MustCompile("^(.+)\n--+$")
+	m = re.FindAllStringSubmatch(line, -1)
 	if len(m) > 0 {
 		return m[0][1], true
 	}
