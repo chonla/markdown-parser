@@ -47,30 +47,59 @@ func createElement(line string) *Element {
 	return NewElement("text", line)
 }
 
-func tryH1(line string) (string, bool) {
-	re := regexp.MustCompile("^# (.+)$")
-	m := re.FindAllStringSubmatch(line, -1)
-	if len(m) > 0 {
-		return m[0][1], true
-	}
-	re = regexp.MustCompile("^(.+)\n==+$")
-	m = re.FindAllStringSubmatch(line, -1)
+func testPattern(pat, text string) (string, bool) {
+	re := regexp.MustCompile(pat)
+	m := re.FindAllStringSubmatch(text, -1)
 	if len(m) > 0 {
 		return m[0][1], true
 	}
 	return "", false
 }
 
-func tryH2(line string) (string, bool) {
-	re := regexp.MustCompile("^## (.+)$")
-	m := re.FindAllStringSubmatch(line, -1)
-	if len(m) > 0 {
-		return m[0][1], true
+func tryH1(line string) (string, bool) {
+	if text, ok := testPattern("^# (.+)$", line); ok {
+		return text, ok
 	}
-	re = regexp.MustCompile("^(.+)\n--+$")
-	m = re.FindAllStringSubmatch(line, -1)
-	if len(m) > 0 {
-		return m[0][1], true
+	if text, ok := testPattern("^(.+)\n==+$", line); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryH2(line string) (string, bool) {
+	if text, ok := testPattern("^## (.+)$", line); ok {
+		return text, ok
+	}
+	if text, ok := testPattern("^(.+)\n--+$", line); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryH3(line string) (string, bool) {
+	if text, ok := testPattern("^### (.+)$", line); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryH4(line string) (string, bool) {
+	if text, ok := testPattern("^#### (.+)$", line); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryH5(line string) (string, bool) {
+	if text, ok := testPattern("^##### (.+)$", line); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryH6(line string) (string, bool) {
+	if text, ok := testPattern("^###### (.+)$", line); ok {
+		return text, ok
 	}
 	return "", false
 }
