@@ -8,12 +8,13 @@ import (
 
 func TestCreateNewElement(t *testing.T) {
 	expected := &Element{
-		Text:     "",
+		Text:     "good",
 		Type:     "text",
+		Parent:   nil,
 		Elements: []*Element{},
 	}
 
-	el := NewElement()
+	el := NewElement("text", "good")
 
 	assert.Equal(t, expected, el)
 }
