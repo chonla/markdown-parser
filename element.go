@@ -6,14 +6,16 @@ import (
 
 // ElementHierarchy provides hierachical structure
 var ElementHierarchy = map[string]int{
-	"doc":  0,
-	"h1":   10,
-	"h2":   20,
-	"h3":   30,
-	"h4":   40,
-	"h5":   50,
-	"h6":   60,
-	"text": 1000,
+	"doc":   0,
+	"h1":    10,
+	"h2":    20,
+	"h3":    30,
+	"h4":    40,
+	"h5":    50,
+	"h6":    60,
+	"code":  100,
+	"table": 100,
+	"text":  100,
 }
 
 // Element represents element in markdown document
