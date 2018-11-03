@@ -1,6 +1,8 @@
 package parser
 
-import "regexp"
+import (
+	"regexp"
+)
 
 // ElementHierarchy provides hierachical structure
 var ElementHierarchy = map[string]int{
@@ -37,17 +39,17 @@ func (e *Element) Append(el *Element) {
 	e.Elements = append(e.Elements, el)
 }
 
-func createElement(line string) *Element {
-	if text, ok := tryH1(line); ok {
+func createElement(block string) *Element {
+	if text, ok := tryH1(block); ok {
 		return NewElement("h1", text)
 	}
-	if text, ok := tryH2(line); ok {
+	if text, ok := tryH2(block); ok {
 		return NewElement("h2", text)
 	}
-	return NewElement("text", line)
+	return NewElement("text", block)
 }
 
-func testPattern(pat, text string) (string, bool) {
+func testLinePattern(pat, text string) (string, bool) {
 	re := regexp.MustCompile(pat)
 	m := re.FindAllStringSubmatch(text, -1)
 	if len(m) > 0 {
@@ -56,49 +58,56 @@ func testPattern(pat, text string) (string, bool) {
 	return "", false
 }
 
-func tryH1(line string) (string, bool) {
-	if text, ok := testPattern("^# (.+)$", line); ok {
+func tryH1(block string) (string, bool) {
+	if text, ok := testLinePattern("^# (.+)$", block); ok {
 		return text, ok
 	}
-	if text, ok := testPattern("^(.+)\n==+$", line); ok {
-		return text, ok
-	}
-	return "", false
-}
-
-func tryH2(line string) (string, bool) {
-	if text, ok := testPattern("^## (.+)$", line); ok {
-		return text, ok
-	}
-	if text, ok := testPattern("^(.+)\n--+$", line); ok {
+	if text, ok := testLinePattern("^(.+)\n==+$", block); ok {
 		return text, ok
 	}
 	return "", false
 }
 
-func tryH3(line string) (string, bool) {
-	if text, ok := testPattern("^### (.+)$", line); ok {
+func tryH2(block string) (string, bool) {
+	if text, ok := testLinePattern("^## (.+)$", block); ok {
+		return text, ok
+	}
+	if text, ok := testLinePattern("^(.+)\n--+$", block); ok {
 		return text, ok
 	}
 	return "", false
 }
 
-func tryH4(line string) (string, bool) {
-	if text, ok := testPattern("^#### (.+)$", line); ok {
+func tryH3(block string) (string, bool) {
+	if text, ok := testLinePattern("^### (.+)$", block); ok {
 		return text, ok
 	}
 	return "", false
 }
 
-func tryH5(line string) (string, bool) {
-	if text, ok := testPattern("^##### (.+)$", line); ok {
+func tryH4(block string) (string, bool) {
+	if text, ok := testLinePattern("^#### (.+)$", block); ok {
 		return text, ok
 	}
 	return "", false
 }
 
-func tryH6(line string) (string, bool) {
-	if text, ok := testPattern("^###### (.+)$", line); ok {
+func tryH5(block string) (string, bool) {
+	if text, ok := testLinePattern("^##### (.+)$", block); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryH6(block string) (string, bool) {
+	if text, ok := testLinePattern("^###### (.+)$", block); ok {
+		return text, ok
+	}
+	return "", false
+}
+
+func tryCode(block string) (string, bool) {
+	if text, ok := testLinePattern("(?s)^```[^\n]*\n(.+)\n```$", block); ok {
 		return text, ok
 	}
 	return "", false

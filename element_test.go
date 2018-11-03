@@ -54,3 +54,48 @@ func TestTryAlternateH2(t *testing.T) {
 	assert.True(t, success)
 	assert.Equal(t, "Title", text)
 }
+
+func TestTryH3(t *testing.T) {
+	content := "### Title"
+
+	text, success := tryH3(content)
+
+	assert.True(t, success)
+	assert.Equal(t, "Title", text)
+}
+
+func TestTryH4(t *testing.T) {
+	content := "#### Title"
+
+	text, success := tryH4(content)
+
+	assert.True(t, success)
+	assert.Equal(t, "Title", text)
+}
+
+func TestTryH5(t *testing.T) {
+	content := "##### Title"
+
+	text, success := tryH5(content)
+
+	assert.True(t, success)
+	assert.Equal(t, "Title", text)
+}
+
+func TestTryH6(t *testing.T) {
+	content := "###### Title"
+
+	text, success := tryH6(content)
+
+	assert.True(t, success)
+	assert.Equal(t, "Title", text)
+}
+
+func TestTryCodeBlock(t *testing.T) {
+	content := "```\nContent\nWith\nNew Line\n```"
+
+	text, success := tryCode(content)
+
+	assert.True(t, success)
+	assert.Equal(t, "Content\nWith\nNew Line", text)
+}

@@ -1,22 +1,22 @@
 package parser
 
 import (
-	"regexp"
+	"github.com/kr/pretty"
 )
 
 // Parse markdown text to document
 func Parse(content string) *Document {
 	doc := NewDocument()
 	var cursor = doc.Element
+	tokenizer := NewTokenizer()
 
-	sectionRe := regexp.MustCompile("\n\n+")
-	lines := sectionRe.Split(content, -1)
+	blocks := tokenizer.Tokenize(content)
 
-	// lines := strings.Split(content, "\n\n")
+	pretty.Println(blocks)
 
-	for _, line := range lines {
-		if line != "" {
-			element := createElement(line)
+	for _, block := range blocks {
+		if block != "" {
+			element := createElement(block)
 			for ElementHierarchy[cursor.Type] >= ElementHierarchy[element.Type] {
 				cursor = cursor.Parent
 			}
