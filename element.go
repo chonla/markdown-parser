@@ -110,5 +110,8 @@ func tryCode(block string) (string, bool) {
 	if text, ok := testLinePattern("(?s)^```[^\n]*\n(.+)\n```$", block); ok {
 		return text, ok
 	}
+	if text, ok := testLinePattern("(?s)^~~~[^\n]*\n(.+)\n~~~$", block); ok {
+		return text, ok
+	}
 	return "", false
 }

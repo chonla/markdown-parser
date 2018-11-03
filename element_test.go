@@ -99,3 +99,12 @@ func TestTryCodeBlock(t *testing.T) {
 	assert.True(t, success)
 	assert.Equal(t, "Content\nWith\nNew Line", text)
 }
+
+func TestTryAlternativeCodeBlock(t *testing.T) {
+	content := "~~~\nContent\nWith\nNew Line\n~~~"
+
+	text, success := tryCode(content)
+
+	assert.True(t, success)
+	assert.Equal(t, "Content\nWith\nNew Line", text)
+}

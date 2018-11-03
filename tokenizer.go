@@ -8,6 +8,7 @@ import (
 // linesBlock defines multilines block open/close pattern
 var linesBlock = map[string]string{
 	"^```.*$": "^```$",
+	"^~~~.*$": "^~~~$",
 }
 
 // Tokenizer is markdown block tokenizer

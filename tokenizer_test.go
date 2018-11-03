@@ -115,3 +115,13 @@ func TestTokenizeSimpleDataWith1NamedCodeBlock(t *testing.T) {
 
 	assert.Equal(t, expected, result)
 }
+
+func TestTokenizeSimpleDataWith1AlternativeCodeBlock(t *testing.T) {
+	content := "~~~\ntest\n\ntest2\n~~~"
+	expected := []string{"~~~\ntest\n\ntest2\n~~~"}
+	tokenizer := NewTokenizer()
+
+	result := tokenizer.Tokenize(content)
+
+	assert.Equal(t, expected, result)
+}
