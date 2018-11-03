@@ -46,6 +46,36 @@ func TestTokenizeSimpleDataWith2Blocks(t *testing.T) {
 	assert.Equal(t, expected, result)
 }
 
+func TestTokenizeSimpleDataWithVeryLongBlockSeparator(t *testing.T) {
+	content := "test\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntest2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntest3\ntest4"
+	expected := []string{"test", "test2", "test3\ntest4"}
+	tokenizer := NewTokenizer()
+
+	result := tokenizer.Tokenize(content)
+
+	assert.Equal(t, expected, result)
+}
+
+func TestTokenizeSimpleDataWithEmptyContentBeforeSeparator(t *testing.T) {
+	content := "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntest2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntest3\ntest4"
+	expected := []string{"test2", "test3\ntest4"}
+	tokenizer := NewTokenizer()
+
+	result := tokenizer.Tokenize(content)
+
+	assert.Equal(t, expected, result)
+}
+
+func TestTokenizeSimpleDataWithEmptyContentAfterSeparator(t *testing.T) {
+	content := "test\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntest2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntest3\ntest4\n\n\n\n\n\n"
+	expected := []string{"test", "test2", "test3\ntest4"}
+	tokenizer := NewTokenizer()
+
+	result := tokenizer.Tokenize(content)
+
+	assert.Equal(t, expected, result)
+}
+
 func TestTokenizeSimpleDataWith1CodeBlock(t *testing.T) {
 	content := "```\ntest\n\ntest2\n```"
 	expected := []string{"```\ntest\n\ntest2\n```"}
