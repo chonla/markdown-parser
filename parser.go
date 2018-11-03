@@ -1,9 +1,5 @@
 package parser
 
-import (
-	"github.com/kr/pretty"
-)
-
 // Parse markdown text to document
 func Parse(content string) *Document {
 	doc := NewDocument()
@@ -11,8 +7,6 @@ func Parse(content string) *Document {
 	tokenizer := NewTokenizer()
 
 	blocks := tokenizer.Tokenize(content)
-
-	pretty.Println(blocks)
 
 	for _, block := range blocks {
 		if block != "" {
