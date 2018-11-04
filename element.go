@@ -38,6 +38,37 @@ func NewElement(elType, text string) *Element {
 	}
 }
 
+// NewTable creates a new table
+func NewTable(table [][]string) *Element {
+	tableElement := &Element{
+		Parent:   nil,
+		Text:     "",
+		Type:     "table",
+		Elements: []*Element{},
+	}
+
+	for _, row := range table {
+		rowElement := &Element{
+			Parent:   tableElement,
+			Text:     "",
+			Type:     "row",
+			Elements: []*Element{},
+		}
+		for _, cell := range row {
+			cellElement := &Element{
+				Parent:   rowElement,
+				Text:     cell,
+				Type:     "cell",
+				Elements: []*Element{},
+			}
+			rowElement.Append(cellElement)
+		}
+		tableElement.Append(rowElement)
+	}
+
+	return tableElement
+}
+
 // Append element to current element
 func (e *Element) Append(el *Element) {
 	e.Elements = append(e.Elements, el)
@@ -49,6 +80,24 @@ func createElement(block string) *Element {
 	}
 	if text, ok := tryH2(block); ok {
 		return NewElement("h2", text)
+	}
+	if text, ok := tryH3(block); ok {
+		return NewElement("h3", text)
+	}
+	if text, ok := tryH4(block); ok {
+		return NewElement("h4", text)
+	}
+	if text, ok := tryH5(block); ok {
+		return NewElement("h5", text)
+	}
+	if text, ok := tryH6(block); ok {
+		return NewElement("h6", text)
+	}
+	if text, ok := tryCode(block); ok {
+		return NewElement("code", text)
+	}
+	if table, ok := tryTable(block); ok {
+		return NewTable(table)
 	}
 	return NewElement("text", block)
 }
