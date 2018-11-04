@@ -124,3 +124,55 @@ func TestTry1ColumnTable(t *testing.T) {
 		},
 	}, text)
 }
+
+func TestTry2ColumnTable(t *testing.T) {
+	content := "| Header 1 | Header 2 |\n| --- | --- |\n| Body 1 | Body 2 |"
+
+	text, success := tryTable(content)
+
+	assert.True(t, success)
+	assert.Equal(t, [][]string{
+		[]string{
+			"Header 1",
+			"Header 2",
+		},
+		[]string{
+			"Body 1",
+			"Body 2",
+		},
+	}, text)
+}
+
+func TestTryLargeColumnTable(t *testing.T) {
+	content := "| Header 1 | Header 2 | Header 3 | Header 4 |\n| --- | --- | --- | --- |\n| Body 1 Row 1 | Body 2 Row 1 | Body 3 Row 1 | Body 4 Row 1 |\n| Body 1 Row 2 | Body 2 Row 2 | Body 3 Row 2 | Body 4 Row 2 |\n| Body 1 Row 3 | Body 2 Row 3 | Body 3 Row 3 | Body 4 Row 3 |"
+
+	text, success := tryTable(content)
+
+	assert.True(t, success)
+	assert.Equal(t, [][]string{
+		[]string{
+			"Header 1",
+			"Header 2",
+			"Header 3",
+			"Header 4",
+		},
+		[]string{
+			"Body 1 Row 1",
+			"Body 2 Row 1",
+			"Body 3 Row 1",
+			"Body 4 Row 1",
+		},
+		[]string{
+			"Body 1 Row 2",
+			"Body 2 Row 2",
+			"Body 3 Row 2",
+			"Body 4 Row 2",
+		},
+		[]string{
+			"Body 1 Row 3",
+			"Body 2 Row 3",
+			"Body 3 Row 3",
+			"Body 4 Row 3",
+		},
+	}, text)
+}

@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -124,6 +125,7 @@ func tryTable(block string) ([][]string, bool) {
 
 	lines := strings.Split(block, "\n")
 	if len(lines) < 3 {
+		fmt.Println("not a table")
 		return nil, false
 	}
 
@@ -133,6 +135,7 @@ func tryTable(block string) ([][]string, bool) {
 	reSep := regexp.MustCompile(patSep)
 	if !reSep.MatchString(lines[1]) {
 		// header separator does not present
+		fmt.Println("header separator does not present")
 		return nil, false
 	}
 
@@ -140,6 +143,7 @@ func tryTable(block string) ([][]string, bool) {
 
 	if colCount != columnCount(lines[0]) {
 		// header and column count does not match
+		fmt.Println("header and column count does not match")
 		return nil, false
 	}
 
