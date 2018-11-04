@@ -108,3 +108,19 @@ func TestTryAlternativeCodeBlock(t *testing.T) {
 	assert.True(t, success)
 	assert.Equal(t, "Content\nWith\nNew Line", text)
 }
+
+func TestTry1ColumnTable(t *testing.T) {
+	content := "| Header |\n| --- |\n| Body |"
+
+	text, success := tryTable(content)
+
+	assert.True(t, success)
+	assert.Equal(t, [][]string{
+		[]string{
+			"Header",
+		},
+		[]string{
+			"Body",
+		},
+	}, text)
+}

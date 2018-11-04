@@ -125,3 +125,13 @@ func TestTokenizeSimpleDataWith1AlternativeCodeBlock(t *testing.T) {
 
 	assert.Equal(t, expected, result)
 }
+
+func TestTokenizeTableData(t *testing.T) {
+	content := "| Header |\n| - |\n| Body |"
+	expected := []string{"| Header |\n| - |\n| Body |"}
+	tokenizer := NewTokenizer()
+
+	result := tokenizer.Tokenize(content)
+
+	assert.Equal(t, expected, result)
+}
