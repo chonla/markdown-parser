@@ -12,8 +12,10 @@ Markdown parser engine written in go.
 * H6 (######)
 * Code block starting with ``` and ~~~
 * Paragraph
+* Table
 
 ## To Do
 
-* Table
+* Unordered List
+* Ordered List
 * Blockquote
