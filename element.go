@@ -8,16 +8,18 @@ import (
 
 // ElementHierarchy provides hierachical structure
 var ElementHierarchy = map[string]int{
-	"doc":   0,
-	"h1":    10,
-	"h2":    20,
-	"h3":    30,
-	"h4":    40,
-	"h5":    50,
-	"h6":    60,
-	"code":  100,
-	"table": 100,
-	"text":  100,
+	"doc":            0,
+	"h1":             10,
+	"h2":             20,
+	"h3":             30,
+	"h4":             40,
+	"h5":             50,
+	"h6":             60,
+	"code":           100,
+	"table":          100,
+	"text":           100,
+	"unordered-list": 100,
+	"ordered-list":   100,
 }
 
 // Element represents element in markdown document
@@ -69,6 +71,29 @@ func NewTable(table [][]string) *Element {
 	return tableElement
 }
 
+// NewUnorderedList creates unordered list
+func NewUnorderedList(list []string) *Element {
+	listElement := &Element{
+		Parent:   nil,
+		Text:     "",
+		Type:     "unordered-list",
+		Elements: []*Element{},
+	}
+
+	for _, item := range list {
+		itemElement := &Element{
+			Parent:   listElement,
+			Text:     item,
+			Type:     "list-item",
+			Elements: []*Element{},
+		}
+
+		listElement.Append(itemElement)
+	}
+
+	return listElement
+}
+
 // Append element to current element
 func (e *Element) Append(el *Element) {
 	e.Elements = append(e.Elements, el)
@@ -98,6 +123,9 @@ func createElement(block string) *Element {
 	}
 	if table, ok := tryTable(block); ok {
 		return NewTable(table)
+	}
+	if list, ok := tryUnorderedList(block); ok {
+		return NewUnorderedList(list)
 	}
 	return NewElement("text", block)
 }
@@ -195,7 +223,7 @@ func tryTable(block string) ([][]string, bool) {
 
 	// check header separator
 	// header separator for one column
-	patSep := "^|\\s+:?---+?\\s+|$"
+	patSep := "^\\|( :?---+? \\|)+$"
 	reSep := regexp.MustCompile(patSep)
 	if !reSep.MatchString(lines[1]) {
 		// header separator does not present

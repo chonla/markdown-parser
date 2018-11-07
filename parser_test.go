@@ -497,3 +497,59 @@ func TestParseTableDocument(t *testing.T) {
 
 	assert.Equal(t, expected, result)
 }
+
+func TestParseUnorderedList(t *testing.T) {
+	content := "* item 1\n* item 2\n* item 3"
+
+	ListItem1 := &Element{
+		Type:     "list-item",
+		Elements: []*Element{},
+		Text:     "item 1",
+		Parent:   nil,
+	}
+
+	ListItem2 := &Element{
+		Type:     "list-item",
+		Elements: []*Element{},
+		Text:     "item 2",
+		Parent:   nil,
+	}
+
+	ListItem3 := &Element{
+		Type:     "list-item",
+		Elements: []*Element{},
+		Text:     "item 3",
+		Parent:   nil,
+	}
+
+	List := &Element{
+		Type: "unordered-list",
+		Text: "",
+		Elements: []*Element{
+			ListItem1,
+			ListItem2,
+			ListItem3,
+		},
+		Parent: nil,
+	}
+
+	Doc := &Element{
+		Type: "doc",
+		Elements: []*Element{
+			List,
+		},
+	}
+
+	List.Parent = Doc
+	ListItem1.Parent = List
+	ListItem2.Parent = List
+	ListItem3.Parent = List
+
+	expected := &Document{
+		Element: Doc,
+	}
+
+	result := Parse(content)
+
+	assert.Equal(t, expected, result)
+}
