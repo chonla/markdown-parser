@@ -169,6 +169,21 @@ func tryCode(block string) (string, bool) {
 	return "", false
 }
 
+func tryUnorderedList(block string) ([]string, bool) {
+	output := []string{}
+	lines := strings.Split(block, "\n")
+
+	for _, line := range lines {
+		if text, ok := testLinePattern("^\\* (.+)$", line); ok {
+			output = append(output, text)
+		} else {
+			return nil, false
+		}
+	}
+
+	return output, true
+}
+
 func tryTable(block string) ([][]string, bool) {
 	output := [][]string{}
 

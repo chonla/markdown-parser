@@ -112,7 +112,7 @@ func TestTryAlternativeCodeBlock(t *testing.T) {
 func TestTry1ColumnTable(t *testing.T) {
 	content := "| Header |\n| --- |\n| Body |"
 
-	text, success := tryTable(content)
+	table, success := tryTable(content)
 
 	assert.True(t, success)
 	assert.Equal(t, [][]string{
@@ -122,13 +122,13 @@ func TestTry1ColumnTable(t *testing.T) {
 		[]string{
 			"Body",
 		},
-	}, text)
+	}, table)
 }
 
 func TestTry2ColumnTable(t *testing.T) {
 	content := "| Header 1 | Header 2 |\n| --- | --- |\n| Body 1 | Body 2 |"
 
-	text, success := tryTable(content)
+	table, success := tryTable(content)
 
 	assert.True(t, success)
 	assert.Equal(t, [][]string{
@@ -140,13 +140,13 @@ func TestTry2ColumnTable(t *testing.T) {
 			"Body 1",
 			"Body 2",
 		},
-	}, text)
+	}, table)
 }
 
 func TestTryLargeColumnTable(t *testing.T) {
 	content := "| Header 1 | Header 2 | Header 3 | Header 4 |\n| --- | --- | --- | --- |\n| Body 1 Row 1 | Body 2 Row 1 | Body 3 Row 1 | Body 4 Row 1 |\n| Body 1 Row 2 | Body 2 Row 2 | Body 3 Row 2 | Body 4 Row 2 |\n| Body 1 Row 3 | Body 2 Row 3 | Body 3 Row 3 | Body 4 Row 3 |"
 
-	text, success := tryTable(content)
+	table, success := tryTable(content)
 
 	assert.True(t, success)
 	assert.Equal(t, [][]string{
@@ -174,5 +174,18 @@ func TestTryLargeColumnTable(t *testing.T) {
 			"Body 3 Row 3",
 			"Body 4 Row 3",
 		},
-	}, text)
+	}, table)
+}
+
+func TestTryUnorderedList(t *testing.T) {
+	content := "* test 1\n* test 2\n* test 3"
+
+	list, success := tryUnorderedList(content)
+
+	assert.True(t, success)
+	assert.Equal(t, []string{
+		"test 1",
+		"test 2",
+		"test 3",
+	}, list)
 }
