@@ -14,8 +14,8 @@ Markdown parser engine written in go.
 * Paragraph
 * Table
 * Unordered List
+* Ordered List
 
 ## To Do
 
-* Ordered List
 * Blockquote
