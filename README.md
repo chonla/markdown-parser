@@ -13,9 +13,9 @@ Markdown parser engine written in go.
 * Code block starting with ``` and ~~~
 * Paragraph
 * Table
+* Unordered List
 
 ## To Do
 
-* Unordered List
 * Ordered List
 * Blockquote
