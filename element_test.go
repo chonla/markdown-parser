@@ -189,3 +189,16 @@ func TestTryUnorderedList(t *testing.T) {
 		"test 3",
 	}, list)
 }
+
+func TestTryOrderedList(t *testing.T) {
+	content := "213411. test 1\n0. test 2\n12387192837182738127391287398123. test 3"
+
+	list, success := tryOrderedList(content)
+
+	assert.True(t, success)
+	assert.Equal(t, []string{
+		"test 1",
+		"test 2",
+		"test 3",
+	}, list)
+}

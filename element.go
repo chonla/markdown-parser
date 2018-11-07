@@ -94,6 +94,29 @@ func NewUnorderedList(list []string) *Element {
 	return listElement
 }
 
+// NewOrderedList creates ordered list
+func NewOrderedList(list []string) *Element {
+	listElement := &Element{
+		Parent:   nil,
+		Text:     "",
+		Type:     "ordered-list",
+		Elements: []*Element{},
+	}
+
+	for _, item := range list {
+		itemElement := &Element{
+			Parent:   listElement,
+			Text:     item,
+			Type:     "list-item",
+			Elements: []*Element{},
+		}
+
+		listElement.Append(itemElement)
+	}
+
+	return listElement
+}
+
 // Append element to current element
 func (e *Element) Append(el *Element) {
 	e.Elements = append(e.Elements, el)
@@ -126,6 +149,9 @@ func createElement(block string) *Element {
 	}
 	if list, ok := tryUnorderedList(block); ok {
 		return NewUnorderedList(list)
+	}
+	if list, ok := tryOrderedList(block); ok {
+		return NewOrderedList(list)
 	}
 	return NewElement("text", block)
 }
@@ -203,6 +229,21 @@ func tryUnorderedList(block string) ([]string, bool) {
 
 	for _, line := range lines {
 		if text, ok := testLinePattern("^\\* (.+)$", line); ok {
+			output = append(output, text)
+		} else {
+			return nil, false
+		}
+	}
+
+	return output, true
+}
+
+func tryOrderedList(block string) ([]string, bool) {
+	output := []string{}
+	lines := strings.Split(block, "\n")
+
+	for _, line := range lines {
+		if text, ok := testLinePattern("^\\d+\\. (.+)$", line); ok {
 			output = append(output, text)
 		} else {
 			return nil, false
